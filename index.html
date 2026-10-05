@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrasi Mabit Al Aqobah - IIBF Lampung</title>
+  
+  <!-- Tailwind CSS & Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            arabic: ['"Amiri"', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased pb-20">
+
+  <!-- Header Sticky -->
+  <header class="bg-brand-900/95 backdrop-blur-md sticky top-0 z-50 text-white border-b border-emerald-700/60 shadow-md">
+    <div class="max-w-2xl mx-auto px-4 py-2.5 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="bg-white p-1 rounded-xl flex items-center justify-center h-10 w-10 shadow-sm">
+          <img src="logo-iibf.png" alt="Logo IIBF" class="h-8 w-8 object-contain" />
+        </div>
+        <div>
+          <h1 class="text-sm font-bold tracking-wide uppercase text-emerald-100">Al Aqobah IIBF Lampung</h1>
+          <p class="text-[11px] text-amber-300 font-medium">Mabit Pengusaha Muslim</p>
+        </div>
+      </div>
+      <span id="badgeRegistrationMode" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-800 border border-emerald-600 text-emerald-200">
+        <i class="ph-bold ph-check-circle text-amber-400"></i> Pendaftaran Buka
+      </span>
+    </div>
+  </header>
+
+  <!-- Hero Header -->
+  <div class="bg-gradient-to-b from-brand-900 via-brand-800 to-emerald-950 text-white pt-8 pb-14 px-4 text-center">
+    <div class="max-w-xl mx-auto">
+      <p class="font-arabic text-2xl text-amber-300 mb-2">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+      
+      <span id="heroBadge" class="inline-block px-3 py-1 rounded-full bg-amber-400/20 border border-amber-400/30 text-amber-300 text-xs font-extrabold uppercase tracking-wider mb-2">
+        Mabit Al Aqobah
+      </span>
+
+      <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mb-2 text-white">
+        The Grand Entrepreneur
+      </h2>
+      <p class="text-emerald-200 text-xs md:text-sm max-w-md mx-auto mb-4 italic font-medium">
+        "Bagaimana Rasulullah ﷺ Membangun Peradaban dari Modal Iman dan Ukhuwah"
+      </p>
+
+      <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-2 text-xs text-emerald-50 text-left">
+        <i class="ph-fill ph-map-pin text-amber-400 text-lg flex-shrink-0"></i>
+        <span><strong>Masjid Baitussalam</strong> - Perum BPK 3, Jl. Pramuka, Rajabasa, Bandar Lampung</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Wrapper -->
+  <main class="max-w-2xl mx-auto px-4 -mt-6">
+    <form id="mabitForm" class="bg-white rounded-3xl shadow-xl border border-slate-100 p-5 md:p-8 space-y-7">
+
+      <!-- Section 1: Data Diri & Usaha -->
+      <div>
+        <div class="flex items-center gap-2.5 pb-2.5 border-b border-slate-100 mb-4">
+          <span class="w-7 h-7 rounded-lg bg-emerald-100 text-brand-800 flex items-center justify-center font-bold text-xs">1</span>
+          <div>
+            <h3 class="font-bold text-slate-800 text-sm">Data Peserta Utama & Usaha</h3>
+            <p class="text-[11px] text-slate-500">Data utama untuk tiket, presensi check-in, dan database organisasi.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Lengkap & Gelar *</label>
+            <input type="text" id="fullName" required placeholder="Contoh: H. Ahmad Fauzi" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-700 focus:ring-2 focus:ring-emerald-100" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">No. WhatsApp Aktif *</label>
+            <input type="tel" id="phone" required placeholder="08xxxxxxxxxx" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-700 focus:ring-2 focus:ring-emerald-100" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Domisili / Kota Asal *</label>
+            <input type="text" id="domicile" required placeholder="Contoh: Bandar Lampung, Metro..." class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-700 focus:ring-2 focus:ring-emerald-100" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Brand / Usaha *</label>
+            <input type="text" id="businessName" required placeholder="Contoh: Berkah Mandiri Snack" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-700 focus:ring-2 focus:ring-emerald-100" />
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Sektor Usaha *</label>
+            <select id="businessSector" required class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-700 focus:ring-2 focus:ring-emerald-100 bg-white">
+              <option value="">-- Pilih Sektor Usaha --</option>
+              <option value="Kuliner / F&B">Kuliner / F&B</option>
+              <option value="Retail & Distribusi">Retail & Distribusi</option>
+              <option value="Teknologi & Digital">Teknologi & Digital</option>
+              <option value="Properti & Konstruksi">Properti & Konstruksi</option>
+              <option value="Jasa & Konsultan">Jasa & Konsultan</option>
+              <option value="Pertanian / Peternakan">Pertanian / Peternakan</option>
+              <option value="Fashion & Konveksi">Fashion & Konveksi</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Paket Kehadiran, Rombongan & Infaq -->
+      <div>
+        <div class="flex items-center gap-2.5 pb-2.5 border-b border-slate-100 mb-4">
+          <span class="w-7 h-7 rounded-lg bg-emerald-100 text-brand-800 flex items-center justify-center font-bold text-xs">2</span>
+          <div>
+            <h3 class="font-bold text-slate-800 text-sm">Paket Kehadiran, Rombongan & Infaq</h3>
+            <p class="text-[11px] text-slate-500">Infaq komitmen minimal Rp 50.000 / orang.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5 mb-4">
+          <label class="relative flex flex-col p-3 border-2 rounded-2xl cursor-pointer hover:border-emerald-300 transition text-center has-[:checked]:border-brand-700 has-[:checked]:bg-emerald-50/50">
+            <input type="radio" name="attendanceType" value="single" checked class="sr-only" onchange="handleAttendanceTypeChange()" />
+            <i class="ph-bold ph-user text-brand-700 text-xl mx-auto mb-1"></i>
+            <span class="font-bold text-xs text-slate-800">Single</span>
+            <span class="text-[10px] text-slate-500">1 Orang</span>
+          </label>
+
+          <label class="relative flex flex-col p-3 border-2 rounded-2xl cursor-pointer hover:border-emerald-300 transition text-center has-[:checked]:border-brand-700 has-[:checked]:bg-emerald-50/50">
+            <input type="radio" name="attendanceType" value="pasangan" class="sr-only" onchange="handleAttendanceTypeChange()" />
+            <i class="ph-bold ph-users text-brand-700 text-xl mx-auto mb-1"></i>
+            <span class="font-bold text-xs text-slate-800">Pasangan</span>
+            <span class="text-[10px] text-slate-500">2 Orang</span>
+          </label>
+
+          <label class="relative flex flex-col p-3 border-2 rounded-2xl cursor-pointer hover:border-emerald-300 transition text-center has-[:checked]:border-brand-700 has-[:checked]:bg-emerald-50/50">
+            <input type="radio" name="attendanceType" value="keluarga" class="sr-only" onchange="handleAttendanceTypeChange()" />
+            <i class="ph-bold ph-house-line text-brand-700 text-xl mx-auto mb-1"></i>
+            <span class="font-bold text-xs text-slate-800">Keluarga</span>
+            <span class="text-[10px] text-slate-500">Rombongan</span>
+          </label>
+        </div>
+
+        <!-- Rincian Pendamping / Rombongan (Dinamis: Istri/Anak = Nama Saja, Rekan = Lengkap) -->
+        <div id="familyDetailSection" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3 mb-4">
+          <div class="flex justify-between items-center pb-2 border-b border-slate-200">
+            <div>
+              <span class="text-xs font-bold text-slate-800 block">Daftar Pendamping / Rombongan</span>
+              <span class="text-[10px] text-slate-500">Istri/Suami & Anak: Cukup Nama | Rekan/Teman: Lengkap (Usaha & HP).</span>
+            </div>
+            <div class="flex gap-1 flex-wrap justify-end">
+              <button type="button" onclick="tambahPendamping('istri', 'Istri / Suami (Cukup Nama)')" class="px-2 py-1 bg-emerald-100 text-emerald-800 rounded-lg text-[10px] font-bold">+ Istri/Suami</button>
+              <button type="button" onclick="tambahPendamping('anak', 'Anak (Cukup Nama)')" class="px-2 py-1 bg-emerald-100 text-emerald-800 rounded-lg text-[10px] font-bold">+ Anak</button>
+              <button type="button" onclick="tambahPendamping('rekan', 'Rekan / Teman Bisnis (Lengkap)')" class="px-2 py-1 bg-brand-700 text-white rounded-lg text-[10px] font-bold">+ Rekan</button>
+            </div>
+          </div>
+
+          <div id="containerBarisRombongan" class="space-y-2.5">
+            <!-- Baris input dinamis masuk sini -->
+          </div>
+        </div>
+
+        <!-- Pilihan Nominal Infaq (Kelipatan 25k & Kustom min 50k) -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-4">
+          <label class="block text-xs font-bold text-slate-700 mb-2">Pilih Besaran Infaq Komitmen (per Orang):</label>
+          <div class="grid grid-cols-4 gap-2 mb-3">
+            <button type="button" class="btn-infaq-rate py-2 rounded-xl text-xs font-bold border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 transition" data-rate="50000">Rp 50k</button>
+            <button type="button" class="btn-infaq-rate py-2 rounded-xl text-xs font-bold border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 transition" data-rate="75000">Rp 75k</button>
+            <button type="button" class="btn-infaq-rate py-2 rounded-xl text-xs font-bold border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 transition" data-rate="100000">Rp 100k</button>
+            <button type="button" class="btn-infaq-rate py-2 rounded-xl text-xs font-bold border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 transition" data-rate="custom">Lainnya</button>
+          </div>
+
+          <!-- Input Kustom jika memilih Lainnya -->
+          <div id="customInfaqBox" class="hidden">
+            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tuliskan Infaq Sukarela (Min. Rp 50.000 / orang):</label>
+            <div class="relative">
+              <span class="absolute left-3.5 top-2.5 text-xs text-slate-400 font-bold">Rp</span>
+              <input type="number" id="customInfaqInput" min="50000" step="5000" placeholder="50000" class="w-full text-xs pl-9 pr-3.5 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-brand-700" oninput="handleCustomInfaqInput()" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Box -->
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 rounded-2xl p-4 flex items-center justify-between">
+          <div>
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-900 block">Total Infaq Kehadiran</span>
+            <span class="text-xs text-amber-800 font-medium" id="breakdownLabel">1 Peserta Utama</span>
+          </div>
+          <div class="text-right">
+            <span class="text-xl font-black text-amber-950" id="totalFeeDisplay">Rp 50.000</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Pembayaran & Bukti -->
+      <div>
+        <div class="flex items-center gap-2.5 pb-2.5 border-b border-slate-100 mb-4">
+          <span class="w-7 h-7 rounded-lg bg-emerald-100 text-brand-800 flex items-center justify-center font-bold text-xs">3</span>
+          <div>
+            <h3 class="font-bold text-slate-800 text-sm">Metode Infaq</h3>
+            <p class="text-[11px] text-slate-500" id="paymentSectionDesc">Transfer resmi atau serahkan infaq di meja registrasi.</p>
+          </div>
+        </div>
+
+        <!-- Info Rekening -->
+        <div id="bankInfoBox" class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 mb-4">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-bold text-brand-900 uppercase">Rekening Infaq Panitia</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-brand-700 text-white">Bank BSI</span>
+          </div>
+          <div class="flex items-center justify-between bg-white border border-emerald-100 rounded-xl p-3">
+            <div>
+              <span class="font-mono text-base font-extrabold text-slate-800 tracking-wider select-all" id="rekNumber">7374604222</span>
+              <span class="block text-[11px] text-slate-500 mt-0.5">a.n <strong>IIBF Lampung</strong></span>
+            </div>
+            <button type="button" onclick="copyRekening()" id="copyBtn" class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-brand-800 text-xs font-bold border border-emerald-200 flex items-center gap-1 transition">
+              <i class="ph-bold ph-copy"></i> <span>Salin</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Container Pilihan Metode Bayar (Dinamis: Online vs Onsite) -->
+        <div id="paymentOptionsContainer" class="space-y-2.5"></div>
+
+        <!-- Upload File Bukti Transfer -->
+        <div id="proofUploadBox" class="mt-4 p-4 rounded-2xl border border-dashed border-slate-300 bg-slate-50/70">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Unggah Bukti Transfer *</label>
+          <input type="file" id="proofInput" required accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-700 file:text-white hover:file:bg-brand-800 cursor-pointer" />
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" id="submitBtn" class="w-full py-3.5 px-5 rounded-2xl bg-brand-800 hover:bg-brand-900 active:scale-[0.99] text-white font-bold text-xs md:text-sm tracking-wide shadow-lg shadow-emerald-900/20 transition flex items-center justify-center gap-2">
+        <i class="ph-bold ph-paper-plane-tilt text-base"></i> Simpan Pendaftaran & Buat Tiket
+      </button>
+    </form>
+
+    <!-- Modal Tiket -->
+    <div id="ticketModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative">
+        <div class="w-12 h-12 bg-emerald-100 text-brand-800 rounded-2xl flex items-center justify-center mx-auto mb-3 text-xl">
+          <i class="ph-fill ph-check-circle"></i>
+        </div>
+        <h4 class="text-lg font-bold text-slate-800">Pendaftaran Berhasil!</h4>
+        <p class="text-[11px] text-slate-500 mb-4" id="modalSubtext">Data tersimpan di database panitia.</p>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left space-y-2 mb-5">
+          <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+            <span class="text-[10px] font-bold text-slate-400 uppercase">KODE TIKET</span>
+            <span id="modalCode" class="font-mono font-black text-brand-800 text-sm">AQB-000000</span>
+          </div>
+          <div class="text-xs">
+            <span class="text-slate-400 text-[10px] block">Nama / Brand:</span>
+            <strong id="modalName" class="text-slate-800 block text-xs">Peserta</strong>
+          </div>
+          <div class="text-xs">
+            <span class="text-slate-400 text-[10px] block">Domisili:</span>
+            <strong id="modalDomicile" class="text-slate-800 block text-xs">-</strong>
+          </div>
+          <div class="text-xs">
+            <span class="text-slate-400 text-[10px] block">Total Infaq:</span>
+            <strong id="modalFee" class="text-amber-900 text-xs">Rp 0</strong>
+          </div>
+          <div class="text-xs">
+            <span class="text-slate-400 text-[10px] block">Status:</span>
+            <span id="modalStatusBadge" class="inline-block px-2 py-0.5 rounded text-[10px] font-bold"></span>
+          </div>
+        </div>
+
+        <button onclick="window.location.reload()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold">
+          Tutup & Selesai
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- FIREBASE & SCRIPT LOGIC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyACKut7AzI9uamaQQtR3O3FHZxVF-2utEk",
+      authDomain: "alaqobah-iibf.firebaseapp.com",
+      projectId: "alaqobah-iibf",
+      storageBucket: "alaqobah-iibf.firebasestorage.app",
+      messagingSenderId: "156825475335",
+      appId: "1:156825475335:web:51905be7e06e3bfc73cda2",
+      measurementId: "G-XC3QLCSBM6"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const DRIVE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbycRBJJ8Laqchc2_9Ri7sbSRXMryP4_UBYPZh_8IZJG4BeO-vrAS-916i7-Inh85iNsug/exec";
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const isOnsite = urlParams.get('mode') === 'onsite';
+
+    let currentRatePerPerson = 50000;
+    let totalNominal = 50000;
+
+    function setupMode() {
+      const badgeMode = document.getElementById('badgeRegistrationMode');
+      const heroBadge = document.getElementById('heroBadge');
+      const optionsContainer = document.getElementById('paymentOptionsContainer');
+      const bankBox = document.getElementById('bankInfoBox');
+      const proofBox = document.getElementById('proofUploadBox');
+
+      if (isOnsite) {
+        badgeMode.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-900 border border-purple-400 text-purple-200 shadow-sm";
+        badgeMode.innerHTML = `<i class="ph-bold ph-map-pin text-amber-400"></i> Pendaftaran On-Site`;
+
+        heroBadge.className = "inline-block px-3 py-1 rounded-full bg-purple-500/30 border border-purple-400/40 text-purple-200 text-xs font-black uppercase tracking-wider mb-2";
+        heroBadge.innerText = "Registrasi On-Site Meja Panitia";
+
+        bankBox.classList.add('hidden');
+        proofBox.classList.add('hidden');
+
+        optionsContainer.innerHTML = `
+          <label class="flex items-start gap-3 p-3.5 border-2 rounded-2xl cursor-pointer hover:bg-slate-50 transition has-[:checked]:border-brand-700 has-[:checked]:bg-emerald-50/30">
+            <input type="radio" name="paymentMethod" value="tunai" checked class="mt-0.5 text-brand-700" onchange="togglePaymentMethod()" />
+            <div class="flex-1">
+              <span class="text-xs font-bold text-slate-800 block">Tunai (Cash di Meja Registrasi)</span>
+              <span class="text-[11px] text-slate-500">Serahkan uang tunai langsung kepada panitia penerima.</span>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 p-3.5 border-2 rounded-2xl cursor-pointer hover:bg-slate-50 transition has-[:checked]:border-brand-700 has-[:checked]:bg-emerald-50/30">
+            <input type="radio" name="paymentMethod" value="qris" class="mt-0.5 text-brand-700" onchange="togglePaymentMethod()" />
+            <div class="flex-1">
+              <span class="text-xs font-bold text-slate-800 block">QRIS / Transfer Langsung di Lokasi</span>
+              <span class="text-[11px] text-slate-500">Scan QRIS panitia atau transfer langsung saat pendaftaran.</span>
+            </div>
+          </label>
+        `;
+      } else {
+        optionsContainer.innerHTML = `
+          <label class="flex items-start gap-3 p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50 transition has-[:checked]:border-brand-700 has-[:checked]:bg-emerald-50/30">
+            <input type="radio" name="paymentMethod" value="transfer" checked class="mt-0.5 text-brand-700" onchange="togglePaymentMethod()" />
+            <div class="flex-1">
+              <span class="text-xs font-bold text-slate-800 block">Transfer Rekening BSI (Disarankan)</span>
+              <span class="text-[11px] text-slate-500">Unggah bukti transfer untuk verifikasi e-tiket otomatis.</span>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50 transition has-[:checked]:border-brand-700 has-[:checked]:bg-emerald-50/30">
+            <input type="radio" name="paymentMethod" value="cod" class="mt-0.5 text-brand-700" onchange="togglePaymentMethod()" />
+            <div class="flex-1">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-800 block">Infaq di Tempat (Registrasi Ulang)</span>
+                <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-amber-100 text-amber-800 border border-amber-200">BELUM LUNAS</span>
+              </div>
+              <span class="text-[11px] text-slate-500">Mendapatkan kode registrasi ulang, infaq diserahkan saat check-in.</span>
+            </div>
+          </label>
+        `;
+      }
+    }
+
+    function setupInfaqChips() {
+      const buttons = document.querySelectorAll('.btn-infaq-rate');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => {
+            b.classList.remove('border-brand-700', 'bg-emerald-50', 'text-brand-800');
+            b.classList.add('bg-white', 'text-slate-700');
+          });
+
+          btn.classList.add('border-brand-700', 'bg-emerald-50', 'text-brand-800');
+          btn.classList.remove('bg-white', 'text-slate-700');
+
+          const rate = btn.getAttribute('data-rate');
+          const customBox = document.getElementById('customInfaqBox');
+
+          if (rate === 'custom') {
+            customBox.classList.remove('hidden');
+            const customVal = parseInt(document.getElementById('customInfaqInput').value) || 50000;
+            currentRatePerPerson = Math.max(50000, customVal);
+          } else {
+            customBox.classList.add('hidden');
+            currentRatePerPerson = parseInt(rate);
+          }
+          calculateFee();
+        });
+      });
+      if (buttons.length > 0) buttons[0].click();
+    }
+
+    window.handleCustomInfaqInput = function() {
+      const input = document.getElementById('customInfaqInput');
+      let val = parseInt(input.value) || 0;
+      currentRatePerPerson = val >= 50000 ? val : 50000;
+      calculateFee();
+    };
+
+    window.handleAttendanceTypeChange = function() {
+      const type = document.querySelector('input[name="attendanceType"]:checked').value;
+      const familySection = document.getElementById('familyDetailSection');
+      const container = document.getElementById('containerBarisRombongan');
+      
+      container.innerHTML = '';
+      
+      if (type === 'single') {
+        familySection.classList.add('hidden');
+      } else {
+        familySection.classList.remove('hidden');
+        if (type === 'pasangan') {
+          tambahPendamping('istri', 'Istri / Suami (Cukup Nama)');
+        } else {
+          tambahPendamping('istri', 'Istri / Suami (Cukup Nama)');
+          tambahPendamping('rekan', 'Rekan / Anggota Bisnis (Lengkap)');
+        }
+      }
+      calculateFee();
+    };
+
+    window.tambahPendamping = function(kategori, label) {
+      const container = document.getElementById('containerBarisRombongan');
+      const rowId = 'rom_' + Date.now() + Math.random().toString(36).substr(2, 4);
+
+      const isLengkap = kategori === 'rekan';
+
+      const detailHtml = isLengkap ? `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+          <input type="text" placeholder="Nama Usaha / Brand *" class="rom-business w-full text-xs px-3 py-2 rounded-lg border border-slate-200 bg-slate-50" required />
+          <input type="tel" placeholder="No. WhatsApp Aktif *" class="rom-phone w-full text-xs px-3 py-2 rounded-lg border border-slate-200 bg-slate-50" required />
+        </div>
+      ` : `
+        <p class="text-[10px] text-amber-700 mt-1">*Cukup isi nama saja tanpa usaha & no HP.</p>
+      `;
+
+      const div = document.createElement('div');
+      div.className = "p-3 bg-white border border-slate-200 rounded-xl space-y-2 relative rombongan-row";
+      div.setAttribute("data-kategori", kategori);
+      div.id = rowId;
+      div.innerHTML = `
+        <div class="flex justify-between items-center">
+          <span class="text-[10px] font-extrabold text-emerald-800 uppercase tracking-wider">${label}</span>
+          <button type="button" onclick="document.getElementById('${rowId}').remove(); calculateFee();" class="text-rose-500 hover:text-rose-700 text-xs font-bold">
+            <i class="ph-bold ph-trash"></i> Hapus
+          </button>
+        </div>
+        <div>
+          <input type="text" placeholder="Nama Lengkap *" class="rom-name w-full text-xs px-3 py-2 rounded-lg border border-slate-200 bg-slate-50" required />
+          ${detailHtml}
+        </div>
+      `;
+      container.appendChild(div);
+      calculateFee();
+    };
+
+    window.calculateFee = function() {
+      const rowsCount = document.querySelectorAll('.rombongan-row').length;
+      const totalPcs = 1 + rowsCount; // 1 peserta utama + pendamping
+      
+      const breakdown = document.getElementById('breakdownLabel');
+      const display = document.getElementById('totalFeeDisplay');
+
+      breakdown.innerText = `${totalPcs} Peserta (@ Rp ${currentRatePerPerson.toLocaleString('id-ID')})`;
+      totalNominal = totalPcs * currentRatePerPerson;
+      display.innerText = 'Rp ' + totalNominal.toLocaleString('id-ID');
+    };
+
+    window.togglePaymentMethod = function() {
+      if (isOnsite) return;
+      const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+      const proofBox = document.getElementById('proofUploadBox');
+      const proofInput = document.getElementById('proofInput');
+
+      if (method === 'transfer') {
+        proofBox.classList.remove('hidden');
+        proofInput.required = true;
+      } else {
+        proofBox.classList.add('hidden');
+        proofInput.required = false;
+      }
+    };
+
+    window.copyRekening = function() {
+      const rek = document.getElementById('rekNumber').innerText;
+      navigator.clipboard.writeText(rek).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.innerHTML = `<i class="ph-bold ph-check text-emerald-600"></i> <span>Tersalin</span>`;
+        setTimeout(() => {
+          btn.innerHTML = `<i class="ph-bold ph-copy"></i> <span>Salin</span>`;
+        }, 2000);
+      });
+    };
+
+    function toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    document.getElementById('mabitForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      if (currentRatePerPerson < 50000) {
+        alert("Mohon maaf, infaq komitmen kehadiran minimal Rp 50.000 per orang.");
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-base"></i> Memproses Data...`;
+
+      try {
+        const type = document.querySelector('input[name="attendanceType"]:checked').value;
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        const ticketCode = 'AQB-' + Math.floor(100000 + Math.random() * 900000);
+
+        let driveProofUrl = "-";
+        let base64Data = null;
+        let fileName = null;
+        let mimeType = null;
+
+        if (!isOnsite && paymentMethod === 'transfer') {
+          const fileInput = document.getElementById('proofInput');
+          if (fileInput.files.length > 0) {
+            btn.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-base"></i> Mengunggah Bukti...`;
+            const file = fileInput.files[0];
+            base64Data = await toBase64(file);
+            fileName = `${ticketCode}_${file.name}`;
+            mimeType = file.type;
+            driveProofUrl = "Tersimpan di Google Drive Panitia";
+          }
+        } else if (isOnsite) {
+          driveProofUrl = "Daftar On-site di Lokasi";
+        }
+
+        const fullName = document.getElementById('fullName').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const domicile = document.getElementById('domicile').value.trim();
+        const businessName = document.getElementById('businessName').value.trim();
+        const businessSector = document.getElementById('businessSector').value;
+
+        // Ambil data rombongan dinamis
+        const rombonganElements = document.querySelectorAll('.rombongan-row');
+        const anggotaRombongan = [];
+        rombonganElements.forEach(el => {
+          const kategori = el.getAttribute('data-kategori');
+          const nama = el.querySelector('.rom-name')?.value || '';
+          const usaha = el.querySelector('.rom-business')?.value || (kategori === 'rekan' ? '-' : '- (Cukup Nama)');
+          const hp = el.querySelector('.rom-phone')?.value || (kategori === 'rekan' ? '-' : '- (Cukup Nama)');
+          
+          if (nama) {
+            anggotaRombongan.push({ kategori, fullName: nama, businessName: usaha, phone: hp });
+          }
+        });
+
+        if (DRIVE_SCRIPT_URL) {
+          const gasPayload = {
+            ticketCode: ticketCode,
+            fullName: fullName,
+            phone: phone,
+            domicile: domicile,
+            businessName: businessName,
+            businessSector: businessSector,
+            attendanceType: type,
+            detailPeserta: `${1 + anggotaRombongan.length} Orang`,
+            totalFee: totalNominal,
+            paymentMethod: paymentMethod,
+            registrationType: isOnsite ? "ONSITE" : "ONLINE",
+            fileName: fileName,
+            mimeType: mimeType,
+            base64Data: base64Data
+          };
+
+          fetch(DRIVE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify(gasPayload)
+          }).catch(err => console.warn("GAS sync warning:", err));
+        }
+
+        let paymentStatus = 'MENUNGGU_VERIFIKASI';
+        if (paymentMethod === 'cod' || isOnsite) {
+          paymentStatus = 'BELUM_LUNAS_COD';
+        }
+
+        const payload = {
+          ticketCode,
+          fullName,
+          phone,
+          domicile,
+          businessName,
+          businessSector,
+          attendanceType: type,
+          anggotaRombongan,
+          totalFee: totalNominal,
+          paymentMethod,
+          paymentStatus,
+          registrationType: isOnsite ? "ONSITE" : "ONLINE",
+          proofUrl: driveProofUrl,
+          createdAt: serverTimestamp()
+        };
+
+        btn.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-base"></i> Menyimpan Data...`;
+        await addDoc(collection(db, "mabit_participants"), payload);
+
+        document.getElementById('modalCode').innerText = ticketCode;
+        document.getElementById('modalName').innerText = `${payload.fullName} - ${payload.businessName}`;
+        document.getElementById('modalDomicile').innerText = payload.domicile;
+        document.getElementById('modalFee').innerText = 'Rp ' + totalNominal.toLocaleString('id-ID');
+
+        const badge = document.getElementById('modalStatusBadge');
+        if (isOnsite) {
+          badge.className = "inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200";
+          badge.innerText = `ON-SITE (${paymentMethod.toUpperCase()}) - Tunjukkan ke Panitia`;
+        } else if (paymentStatus === 'BELUM_LUNAS_COD') {
+          badge.className = "inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200";
+          badge.innerText = "BELUM LUNAS (Infaq di Meja Registrasi)";
+        } else {
+          badge.className = "inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200";
+          badge.innerText = "MENUNGGU VERIFIKASI TRANSFER";
+        }
+
+        document.getElementById('ticketModal').classList.remove('hidden');
+
+      } catch (error) {
+        console.error("Error pendaftaran:", error);
+        alert("Gagal menyimpan data: " + error.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="ph-bold ph-paper-plane-tilt text-base"></i> Simpan Pendaftaran & Buat Tiket`;
+      }
+    });
+
+    setupMode();
+    setupInfaqChips();
+  </script>
+</body>
+</html>

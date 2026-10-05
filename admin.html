@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Panitia Mabit Al Aqobah - IIBF Lampung</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- Library QR Scanner, Generator, PDF & AutoTable -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style> body { font-family: 'Plus Jakarta Sans', sans-serif; } </style>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { brand: { 700: '#15803d', 800: '#166534', 900: '#14532d' } } } }
+    }
+  </script>
+</head>
+<body class="bg-slate-100 text-slate-800 pb-16">
+
+  <!-- Header -->
+  <header class="bg-emerald-950 text-white sticky top-0 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="bg-white p-1 rounded-xl flex items-center justify-center h-10 w-10">
+          <img src="logo-iibf.png" alt="Logo IIBF" class="h-8 w-8 object-contain" />
+        </div>
+        <div>
+          <h1 class="text-sm font-bold uppercase tracking-wider text-emerald-100">Check-in & Admin Mabit</h1>
+          <p class="text-[11px] text-amber-300">The Grand Entrepreneur · IIBF Lampung</p>
+        </div>
+      </div>
+      <div class="flex items-center flex-wrap gap-2">
+        <a href="https://drive.google.com/drive/folders/1KLBiAHXFcduWDlxfEQkEfzMwyKD6XH8t" target="_blank" class="px-3 py-1.5 rounded-xl bg-emerald-800/80 hover:bg-emerald-700 text-emerald-100 font-semibold text-xs flex items-center gap-1.5 border border-emerald-700 transition">
+          <i class="ph-bold ph-folder-open text-base text-amber-400"></i> Folder Drive
+        </a>
+        <button id="btnOpenScanner" class="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold text-xs flex items-center gap-1.5 shadow transition">
+          <i class="ph-bold ph-qr-code text-base"></i> Scan QR
+        </button>
+        <button id="btnRefresh" class="p-2 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white transition">
+          <i class="ph-bold ph-arrows-clockwise text-base"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 mt-6 space-y-5">
+    
+    <!-- STATS CARD -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3.5">
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl"><i class="ph-bold ph-users"></i></div>
+        <div>
+          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Total Terdaftar</span>
+          <strong id="statTotalPeserta" class="text-base font-extrabold text-slate-800">0 Orang</strong>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3.5">
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center text-xl"><i class="ph-bold ph-check-circle"></i></div>
+        <div>
+          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Telah Hadir</span>
+          <strong id="statHadir" class="text-base font-extrabold text-blue-700">0 Hadir</strong>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3.5">
+        <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center text-xl"><i class="ph-bold ph-map-pin"></i></div>
+        <div>
+          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Daftar On-site</span>
+          <strong id="statOnsite" class="text-base font-extrabold text-purple-800">0 Peserta</strong>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3.5">
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-xl"><i class="ph-bold ph-wallet"></i></div>
+        <div>
+          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Infaq Terkumpul</span>
+          <strong id="statInfaqLunas" class="text-base font-extrabold text-amber-950">Rp 0</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter & Action Bar -->
+    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col lg:flex-row gap-3 items-center justify-between">
+      <div class="relative w-full lg:w-80">
+        <i class="ph-bold ph-magnifying-glass absolute left-3 top-3 text-slate-400 text-sm"></i>
+        <input type="text" id="searchInput" placeholder="Cari tiket, nama, domisili, atau usaha..." class="w-full text-xs pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+      </div>
+      
+      <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-between lg:justify-end">
+        <select id="statusFilter" class="text-xs px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none">
+          <option value="ALL">Semua Status</option>
+          <option value="HADIR">Sudah Hadir</option>
+          <option value="BELUM_HADIR">Belum Hadir</option>
+          <option value="MENUNGGU_VERIFIKASI">Menunggu Verifikasi</option>
+          <option value="BELUM_LUNAS_COD">Belum Lunas (COD)</option>
+          <option value="LUNAS">Lunas</option>
+        </select>
+        
+        <button id="btnExportAbsensi" class="px-3 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold text-xs border border-blue-200 flex items-center gap-1.5 transition">
+          <i class="ph-bold ph-list-numbers text-base text-blue-600"></i> Form Absensi
+        </button>
+        <button id="btnExportCsv" class="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs border border-emerald-200 flex items-center gap-1.5 transition">
+          <i class="ph-bold ph-file-csv text-base text-emerald-600"></i> CSV
+        </button>
+        <button id="btnExportPdf" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-300 flex items-center gap-1.5 transition">
+          <i class="ph-bold ph-printer text-base text-slate-600"></i> Rekap PDF
+        </button>
+
+        <span id="counterBadge" class="text-xs font-bold text-slate-500 ml-1">0 Data</span>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+            <tr>
+              <th class="py-3.5 px-4">Tiket</th>
+              <th class="py-3.5 px-4">Peserta & Usaha</th>
+              <th class="py-3.5 px-4">Domisili</th>
+              <th class="py-3.5 px-4">Paket & Rombongan</th>
+              <th class="py-3.5 px-4">Infaq Komitmen</th>
+              <th class="py-3.5 px-4">Metode & Bukti</th>
+              <th class="py-3.5 px-4">Status & Presensi</th>
+              <th class="py-3.5 px-4 text-center">Aksi Panitia</th>
+            </tr>
+          </thead>
+          <tbody id="participantTableBody" class="divide-y divide-slate-100">
+            <tr><td colspan="8" class="py-8 text-center text-slate-400">Memuat data pendaftar...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL DETAIL -->
+  <div id="detailModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 text-left shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center pb-3 border-b border-slate-100 mb-4 sticky top-0 bg-white z-10">
+        <div>
+          <h4 class="font-bold text-base text-slate-800">Detail Lengkap Pendaftar</h4>
+          <span id="modalDetailTicket" class="font-mono text-xs font-extrabold text-emerald-800"></span>
+        </div>
+        <button id="btnCloseDetail" class="text-slate-400 hover:text-slate-600"><i class="ph-bold ph-x text-xl"></i></button>
+      </div>
+      <div id="detailContent" class="space-y-3.5 text-xs text-slate-700"></div>
+      <div class="mt-6 flex justify-end gap-2 border-t border-slate-100 pt-3 sticky bottom-0 bg-white">
+        <button id="btnModalCloseAction" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL SCANNER QR -->
+  <div id="scannerModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-5 text-center shadow-2xl relative max-h-[95vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-3">
+        <h4 class="font-bold text-sm text-slate-800">Scan QR Code Check-in</h4>
+        <button id="btnCloseScanner" class="text-slate-400 hover:text-slate-600"><i class="ph-bold ph-x text-lg"></i></button>
+      </div>
+      
+      <div id="reader" class="overflow-hidden rounded-2xl border border-slate-200 w-full min-h-[220px] bg-slate-50 flex items-center justify-center"></div>
+      <p class="text-[11px] text-slate-400 mt-2">Arahkan kamera ke QR code tiket peserta</p>
+
+      <div id="scanResultBox" class="hidden mt-4 p-3 rounded-2xl border text-left space-y-2">
+        <div id="scanResultContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="hiddenQrContainer" style="display: none;"></div>
+
+  <!-- FIREBASE LOGIC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyACKut7AzI9uamaQQtR3O3FHZxVF-2utEk",
+      authDomain: "alaqobah-iibf.firebaseapp.com",
+      projectId: "alaqobah-iibf",
+      storageBucket: "alaqobah-iibf.firebasestorage.app",
+      messagingSenderId: "156825475335",
+      appId: "1:156825475335:web:51905be7e06e3bfc73cda2",
+      measurementId: "G-XC3QLCSBM6"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const DRIVE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbycRBJJ8Laqchc2_9Ri7sbSRXMryP4_UBYPZh_8IZJG4BeO-vrAS-916i7-Inh85iNsug/exec"; 
+
+    let participantsData = [];
+    let html5QrScanner = null;
+
+    function playBeep(type = "success") {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        if (type === "success") {
+          osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+          osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+        } else {
+          osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+          osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+        }
+      } catch (e) {}
+    }
+
+    async function loadData() {
+      try {
+        const snapshot = await getDocs(collection(db, "mabit_participants"));
+        participantsData = [];
+        snapshot.forEach(docSnap => participantsData.push({ id: docSnap.id, ...docSnap.data() }));
+        participantsData.sort((a, b) => (b.createdAt?.toDate?.()?.getTime() || 0) - (a.createdAt?.toDate?.()?.getTime() || 0));
+        updateDashboardMetrics();
+        renderTable(participantsData);
+      } catch (err) {
+        document.getElementById('participantTableBody').innerHTML = `<tr><td colspan="8" class="text-center text-red-500 py-4">Gagal memuat: ${err.message}</td></tr>`;
+      }
+    }
+
+    function updateDashboardMetrics() {
+      document.getElementById('statTotalPeserta').innerText = `${participantsData.length} Orang`;
+      document.getElementById('statHadir').innerText = `${participantsData.filter(p => p.checkedIn).length} Hadir`;
+      document.getElementById('statOnsite').innerText = `${participantsData.filter(p => p.registrationType === 'ONSITE').length} Peserta`;
+      document.getElementById('statInfaqLunas').innerText = `Rp ${participantsData.filter(p => p.paymentStatus === 'LUNAS').reduce((s, p) => s + Number(p.totalFee || 0), 0).toLocaleString('id-ID')}`;
+      document.getElementById('counterBadge').innerText = `${participantsData.length} Data`;
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('participantTableBody');
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400">Belum ada data pendaftar.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = data.map(item => {
+        const isOnsite = item.registrationType === 'ONSITE';
+        const onsiteTag = isOnsite ? `<span class="ml-1 px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-purple-100 text-purple-700 border border-purple-200">ON-SITE</span>` : "";
+        
+        let badge = "";
+        if (item.paymentStatus === 'LUNAS') badge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">LUNAS</span>${onsiteTag}`;
+        else if (item.paymentStatus === 'MENUNGGU_VERIFIKASI') badge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">CEK MUTASI</span>${onsiteTag}`;
+        else badge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800">BELUM LUNAS</span>${onsiteTag}`;
+
+        const waktuHadir = (item.checkedIn && item.checkInTime) ? new Date(item.checkInTime.toDate ? item.checkInTime.toDate() : item.checkInTime).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '';
+        const checkinBadge = item.checkedIn ? `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-100 text-blue-800 border border-blue-200 inline-flex items-center mt-1"><i class="ph-bold ph-check"></i> HADIR (${waktuHadir})</span>` : `<span class="text-[10px] text-slate-400 block mt-1">Belum Masuk</span>`;
+
+        // Deteksi Data Legacy
+        const isLegacyRombongan = (item.attendanceType === 'pasangan' || item.attendanceType === 'keluarga') && (!item.anggotaRombongan || item.anggotaRombongan.length === 0);
+        const jmlRombongan = item.anggotaRombongan ? item.anggotaRombongan.length : 0;
+        
+        let rombonganBadge = '';
+        if (isLegacyRombongan) {
+          rombonganBadge = `<span class="text-[10px] font-bold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200 mt-1 inline-block">⚠️ Kosong (Input saat QR)</span>`;
+        } else {
+          rombonganBadge = `<span class="text-[10px] text-slate-500 block">Pendamping: ${jmlRombongan} Org</span>`;
+        }
+
+        let actionBtns = (item.paymentStatus !== 'LUNAS')
+          ? `<button class="btn-verify px-2.5 py-1 rounded-lg bg-brand-700 hover:bg-brand-800 text-white font-bold text-[10px]" data-id="${item.id}">Verifikasi</button>`
+          : `<div class="flex items-center justify-center gap-1">
+               <button class="btn-resend-wa px-2 py-1 bg-emerald-50 text-emerald-800 font-bold text-[10px] flex items-center gap-1 rounded-lg border border-emerald-200" data-id="${item.id}"><i class="ph-bold ph-whatsapp-logo"></i> WA</button>
+               <button class="btn-pdf px-2 py-1 bg-slate-800 text-white font-bold text-[10px] flex items-center gap-1 rounded-lg" data-code="${item.ticketCode}"><i class="ph-bold ph-file-pdf"></i> Tiket</button>
+             </div>`;
+
+        return `
+          <tr class="hover:bg-slate-50 border-b border-slate-100">
+            <td class="py-3 px-4 font-mono font-bold text-slate-900">${item.ticketCode || '-'}</td>
+            <td class="py-3 px-4"><span class="font-bold text-slate-800 block">${item.fullName || '-'}</span><span class="text-[11px] text-slate-500">${item.businessName || '-'}</span></td>
+            <td class="py-3 px-4 font-medium text-slate-700">${item.domicile || '-'}</td>
+            <td class="py-3 px-4"><span class="font-semibold uppercase block">${item.attendanceType || '-'}</span>${rombonganBadge}</td>
+            <td class="py-3 px-4 font-black text-amber-950">Rp ${Number(item.totalFee || 0).toLocaleString('id-ID')}</td>
+            <td class="py-3 px-4"><span class="uppercase text-[10px] font-semibold text-slate-700 block">${item.paymentMethod || '-'}</span></td>
+            <td class="py-3 px-4"><div>${badge}</div><div>${checkinBadge}</div></td>
+            <td class="py-3 px-4 text-center">
+              <div class="flex items-center justify-center gap-1.5 flex-wrap">
+                <button class="btn-detail p-1.5 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200" data-id="${item.id}"><i class="ph-bold ph-eye text-sm"></i></button>
+                ${!item.checkedIn && item.paymentStatus === 'LUNAS' ? `<button class="btn-manual-checkin p-1.5 bg-blue-50 text-blue-700 rounded-lg border border-blue-200" data-id="${item.id}"><i class="ph-bold ph-user-check text-sm"></i></button>` : ''}
+                ${actionBtns}
+                <button class="btn-delete p-1.5 bg-rose-50 text-rose-600 rounded-lg hover:bg-rose-100" data-id="${item.id}" data-name="${item.fullName}"><i class="ph-bold ph-trash text-sm"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      bindTableEvents();
+    }
+
+    function bindTableEvents() {
+      document.querySelectorAll('.btn-detail').forEach(btn => btn.onclick = () => showDetailModal(participantsData.find(p => p.id === btn.getAttribute('data-id'))));
+      document.querySelectorAll('.btn-verify').forEach(btn => btn.onclick = () => confirmAndNotify(participantsData.find(p => p.id === btn.getAttribute('data-id')), btn));
+      document.querySelectorAll('.btn-pdf').forEach(btn => btn.onclick = () => generatePdfTicket(participantsData.find(p => p.ticketCode === btn.getAttribute('data-code'))));
+      document.querySelectorAll('.btn-delete').forEach(btn => btn.onclick = () => deleteParticipant(btn.getAttribute('data-id'), btn.getAttribute('data-name')));
+      
+      document.querySelectorAll('.btn-manual-checkin').forEach(btn => {
+        btn.onclick = async () => {
+          const item = participantsData.find(p => p.id === btn.getAttribute('data-id'));
+          const isLegacy = (item.attendanceType === 'pasangan' || item.attendanceType === 'keluarga') && (!item.anggotaRombongan || item.anggotaRombongan.length === 0);
+          if (isLegacy) {
+            alert(`Peringatan: ${item.fullName} belum mengisi data rombongan.\nSilakan gunakan tombol "Scan QR" untuk absen sekaligus melengkapi data mereka.`);
+            return;
+          }
+          if (confirm(`Tandai hadir manual untuk ${item.fullName}?`)) {
+            playBeep("success");
+            await updateDoc(doc(db, "mabit_participants", item.id), { checkedIn: true, checkInTime: new Date() });
+            alert(`✅ ${item.fullName} berhasil ditandai hadir.`);
+            loadData();
+          }
+        };
+      });
+
+      document.querySelectorAll('.btn-resend-wa').forEach(btn => {
+        btn.onclick = async () => {
+          const item = participantsData.find(p => p.id === btn.getAttribute('data-id'));
+          btn.disabled = true; btn.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-xs"></i>`;
+          try {
+            await fetch(DRIVE_SCRIPT_URL, {
+              method: "POST", headers: { "Content-Type": "text/plain" },
+              body: JSON.stringify({ action: "send_verified_ticket", phone: item.phone, fullName: item.fullName, businessName: item.businessName, domicile: item.domicile, ticketCode: item.ticketCode, attendanceType: item.attendanceType, totalFee: item.totalFee })
+            });
+            btn.innerHTML = `<i class="ph-bold ph-check text-xs"></i> OK`;
+          } catch (e) {
+            btn.innerHTML = `<i class="ph-bold ph-x text-xs"></i> X`;
+          } finally { setTimeout(() => { btn.disabled = false; btn.innerHTML = `<i class="ph-bold ph-whatsapp-logo text-xs"></i> WA`; }, 2000); }
+        };
+      });
+    }
+
+    async function handleScanSuccess(code) {
+      const match = participantsData.find(p => p.ticketCode === code);
+      const resBox = document.getElementById('scanResultBox');
+      const content = document.getElementById('scanResultContent');
+      resBox.classList.remove('hidden');
+
+      if (!match) {
+        playBeep("error");
+        resBox.className = "mt-4 p-3 rounded-2xl border border-rose-300 bg-rose-50 text-left space-y-1.5";
+        content.innerHTML = `<span class="font-bold text-rose-800 text-xs block">❌ TIKET TIDAK DITEMUKAN</span>`;
+        return;
+      }
+
+      if (match.checkedIn) {
+        playBeep("error");
+        resBox.className = "mt-4 p-3 rounded-2xl border border-amber-300 bg-amber-50 text-left space-y-1.5";
+        content.innerHTML = `
+          <div class="flex items-center gap-1.5 text-amber-900 font-bold text-xs"><i class="ph-bold ph-warning-circle text-base"></i> SUDAH PERNAH CHECK-IN</div>
+          <span class="block text-xs font-bold text-slate-800">${match.fullName}</span>
+        `;
+        return;
+      }
+
+      // Cek apakah datanya Legacy (Versi Lama)
+      const isLegacyRombongan = (match.attendanceType === 'pasangan' || match.attendanceType === 'keluarga') && (!match.anggotaRombongan || match.anggotaRombongan.length === 0);
+
+      let formSusulanHtml = "";
+      if (isLegacyRombongan) {
+        formSusulanHtml = `
+          <div class="p-2.5 bg-white rounded-xl border border-rose-300 text-xs space-y-2 mt-3 mb-2">
+            <span class="font-bold text-rose-700 block text-[11px]">⚠️ Data Rombongan Belum Lengkap</span>
+            <p class="text-[10px] text-slate-500 mb-1">Pendaftar versi lama. Wajib lengkapi data pendampingnya sekarang.</p>
+            <div class="flex gap-1 mb-2">
+              <button id="qrAddIstri" class="px-2 py-1.5 bg-emerald-100 text-emerald-800 rounded-lg text-[10px] font-bold flex-1">+ Istri / Anak</button>
+              <button id="qrAddRekan" class="px-2 py-1.5 bg-brand-700 text-white rounded-lg text-[10px] font-bold flex-1">+ Rekan Lengkap</button>
+            </div>
+            <div id="qrRowsContainer" class="space-y-2 max-h-32 overflow-y-auto"></div>
+          </div>
+        `;
+      } else if (match.anggotaRombongan && match.anggotaRombongan.length > 0) {
+        formSusulanHtml = `
+          <div class="p-2.5 bg-white rounded-xl border border-emerald-200 text-xs space-y-2 mt-2 mb-2">
+            <span class="font-bold text-emerald-900 block text-[11px]">Verifikasi Kehadiran Rombongan:</span>
+            <div class="max-h-32 overflow-y-auto">
+              ${match.anggotaRombongan.map((r, i) => `<div class="p-2 bg-slate-50 rounded-lg border border-slate-100 text-[11px] mb-1"><strong>${i+1}. ${r.fullName}</strong> (${r.kategori})</div>`).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // Ambil data dari form susulan
+      const getQrRombonganData = () => {
+        if (!isLegacyRombongan) return match.anggotaRombongan || [];
+        const rows = document.querySelectorAll('.qr-row');
+        const newRom = [];
+        rows.forEach(row => {
+          const kat = row.getAttribute('data-kategori');
+          const nama = row.querySelector('.qr-name')?.value || '';
+          if (nama) newRom.push({ kategori: kat, fullName: nama, businessName: kat === 'rekan' ? (row.querySelector('.qr-biz')?.value || '-') : '- (Keluarga)', phone: kat === 'rekan' ? (row.querySelector('.qr-hp')?.value || '-') : '- (Keluarga)' });
+        });
+        return newRom;
+      };
+
+      const bindFormSusulan = () => {
+        if (isLegacyRombongan) {
+          const c = document.getElementById('qrRowsContainer');
+          document.getElementById('qrAddIstri').onclick = () => {
+            const id = 'qr_' + Date.now();
+            c.insertAdjacentHTML('beforeend', `<div id="${id}" class="p-2 border border-slate-200 rounded bg-slate-50 relative qr-row" data-kategori="istri"><button onclick="document.getElementById('${id}').remove()" class="absolute top-1 right-1 text-rose-500 text-xs font-bold">X</button><span class="text-[9px] font-bold text-emerald-700 uppercase">Istri / Anak</span><input type="text" placeholder="Nama Lengkap *" class="qr-name w-full mt-1 text-[11px] px-2 py-1 rounded border border-slate-200" required></div>`);
+          };
+          document.getElementById('qrAddRekan').onclick = () => {
+            const id = 'qr_' + Date.now();
+            c.insertAdjacentHTML('beforeend', `<div id="${id}" class="p-2 border border-slate-200 rounded bg-slate-50 relative qr-row" data-kategori="rekan"><button onclick="document.getElementById('${id}').remove()" class="absolute top-1 right-1 text-rose-500 text-xs font-bold">X</button><span class="text-[9px] font-bold text-emerald-700 uppercase">Rekan Bisnis</span><input type="text" placeholder="Nama Lengkap *" class="qr-name w-full mt-1 text-[11px] px-2 py-1 rounded border border-slate-200" required><input type="text" placeholder="Usaha *" class="qr-biz w-full mt-1 text-[11px] px-2 py-1 rounded border border-slate-200" required><input type="text" placeholder="No HP *" class="qr-hp w-full mt-1 text-[11px] px-2 py-1 rounded border border-slate-200" required></div>`);
+          };
+        }
+      };
+
+      if (match.paymentStatus === 'LUNAS') {
+        playBeep("success");
+        resBox.className = "mt-4 p-3 rounded-2xl border border-emerald-300 bg-emerald-50 text-left";
+        content.innerHTML = `
+          <div class="flex items-center gap-1.5 text-emerald-800 font-bold text-xs"><i class="ph-bold ph-check-circle text-base"></i> TIKET VALID & LUNAS ✅</div>
+          <span class="block text-xs font-bold text-slate-800">${match.fullName} (${match.domicile})</span>
+          ${formSusulanHtml}
+          <button id="btnFinalCheckin" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs shadow mt-2">Simpan Absensi & Selesaikan Check-in</button>
+        `;
+        
+        bindFormSusulan();
+        document.getElementById('btnFinalCheckin').onclick = async () => {
+          const newRom = getQrRombonganData();
+          if (isLegacyRombongan && newRom.length === 0 && !confirm("Anda belum menambah nama rombongan satupun. Yakin kosongkan?")) return;
+          
+          document.getElementById('btnFinalCheckin').innerHTML = `Memproses...`;
+          const payload = { checkedIn: true, checkInTime: new Date() };
+          if (isLegacyRombongan) payload.anggotaRombongan = newRom;
+          
+          await updateDoc(doc(db, "mabit_participants", match.id), payload);
+          alert(`Absensi ${match.fullName} berhasil dicatat!`);
+          loadData(); resBox.classList.add('hidden');
+        };
+      } else {
+        playBeep("error");
+        resBox.className = "mt-4 p-3 rounded-2xl border border-rose-300 bg-rose-50 text-left";
+        content.innerHTML = `
+          <div class="flex items-center gap-1.5 text-rose-800 font-bold text-xs"><i class="ph-bold ph-warning text-base text-rose-600"></i> BELUM LUNAS</div>
+          <span class="block text-xs font-bold text-slate-800">${match.fullName}</span>
+          <span class="block text-xs font-black text-rose-700">Wajib Infaq: Rp ${Number(match.totalFee || 0).toLocaleString('id-ID')}</span>
+          ${formSusulanHtml}
+          <button id="btnScanPayAndCheckin" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs shadow mt-2">Terima Infaq Tunai & Check-in</button>
+        `;
+
+        bindFormSusulan();
+        document.getElementById('btnScanPayAndCheckin').onclick = async () => {
+          const newRom = getQrRombonganData();
+          if (isLegacyRombongan && newRom.length === 0 && !confirm("Anda belum menambah nama rombongan satupun. Yakin kosongkan?")) return;
+          
+          document.getElementById('btnScanPayAndCheckin').innerHTML = `Memproses...`;
+          const payload = { paymentStatus: "LUNAS", checkedIn: true, checkInTime: new Date() };
+          if (isLegacyRombongan) payload.anggotaRombongan = newRom;
+
+          await updateDoc(doc(db, "mabit_participants", match.id), payload);
+          fetch(DRIVE_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "send_verified_ticket", phone: match.phone, fullName: match.fullName, ticketCode: match.ticketCode }) }).catch(()=>{});
+          alert(`Pelunasan & Absensi ${match.fullName} berhasil dicatat!`);
+          loadData(); resBox.classList.add('hidden');
+        };
+      }
+    }
+
+    async function startScanner() {
+      document.getElementById('scannerModal').classList.remove('hidden');
+      if (!html5QrScanner) html5QrScanner = new Html5Qrcode("reader");
+      try { await html5QrScanner.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 200, height: 200 } }, (code) => handleScanSuccess(code.trim()), ()=>{}); } catch(e) {}
+    }
+
+    async function stopScanner() {
+      if (html5QrScanner && html5QrScanner.isScanning) await html5QrScanner.stop();
+      document.getElementById('scannerModal').classList.add('hidden');
+    }
+
+    function showDetailModal(item) {
+      document.getElementById('modalDetailTicket').innerText = item.ticketCode || '-';
+      const proofLink = (item.proofUrl && item.proofUrl.startsWith("http")) ? `<a href="${item.proofUrl}" target="_blank" class="text-emerald-700 font-bold underline">Buka Bukti Drive</a>` : `<span class="text-slate-400 italic">${item.proofUrl || '-'}</span>`;
+      let rombonganHtml = (item.anggotaRombongan && item.anggotaRombongan.length > 0) ? `<div class="bg-slate-50 p-3 rounded-xl border space-y-2"><span class="text-[10px] font-bold">ROMBONGAN:</span>${item.anggotaRombongan.map((r,i) => `<div class="p-2 bg-white rounded text-xs border">${i+1}.${r.fullName} (${r.kategori})${r.kategori==='rekan'?`- ${r.businessName} - ${r.phone}`:''}</div>`).join('')}</div>` : `<div class="bg-slate-50 p-2 text-center text-xs text-slate-400">Datang Sendiri</div>`;
+
+      document.getElementById('detailContent').innerHTML = `
+        <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border">
+          <div><span class="text-[10px] text-slate-400 block">Nama Utama</span><strong class="text-xs text-slate-800">${item.fullName}</strong></div>
+          <div><span class="text-[10px] text-slate-400 block">WhatsApp</span><a href="https://wa.me/${item.phone}" class="text-xs text-emerald-600 font-bold">${item.phone}</a></div>
+          <div><span class="text-[10px] text-slate-400 block">Domisili</span><strong class="text-xs text-slate-800">${item.domicile}</strong></div>
+          <div><span class="text-[10px] text-slate-400 block">Bisnis</span><strong class="text-xs text-slate-800">${item.businessName}</strong></div>
+        </div>
+        ${rombonganHtml}
+        <div class="bg-slate-50 p-3 rounded-xl border text-xs">
+          <div><span class="text-slate-400">Total Infaq:</span> <strong>Rp ${Number(item.totalFee).toLocaleString('id-ID')}</strong></div>
+          <div><span class="text-slate-400">Status:</span> <strong>${item.paymentStatus}</strong></div>
+          <div><span class="text-slate-400">Bukti:</span> ${proofLink}</div>
+        </div>
+      `;
+      document.getElementById('detailModal').classList.remove('hidden');
+    }
+
+    async function deleteParticipant(id, name) {
+      if (confirm(`Hapus permanen pendaftar "${name}"?`)) {
+        await deleteDoc(doc(db, "mabit_participants", id));
+        loadData();
+      }
+    }
+    
+    async function confirmAndNotify(item, btn) {
+      if (confirm(`Konfirmasi lunas ${item.fullName}? WA e-Tiket akan dikirim.`)) {
+        btn.innerHTML = `Memproses...`;
+        await updateDoc(doc(db, "mabit_participants", item.id), { paymentStatus: "LUNAS" });
+        try { await fetch(DRIVE_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "send_verified_ticket", phone: item.phone, fullName: item.fullName, ticketCode: item.ticketCode, attendanceType: item.attendanceType, totalFee: item.totalFee }) }); } catch(e){}
+        loadData();
+      }
+    }
+
+    // FUNGSI EXPORT ABSENSI PDF INDIVIDU (Yang Semalam)
+    function exportAbsensiPdf() {
+      if (participantsData.length === 0) return alert("Kosong!");
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+
+      doc.setFontSize(13); doc.setFont("helvetica", "bold");
+      doc.text("FORM ABSENSI PESERTA & ROMBONGAN", 14, 13);
+      doc.setFontSize(8); doc.setFont("helvetica", "italic");
+      doc.text("Total seluruh individu terdaftar (Utama & Pendamping).", 14, 18);
+
+      const tableData = []; let rowNum = 1;
+      participantsData.forEach(p => {
+        tableData.push([ rowNum++, p.fullName || '-', p.businessName || '-', p.phone || '-', 'UTAMA', p.checkedIn ? 'HADIR' : ' ' ]);
+        if (p.anggotaRombongan && Array.isArray(p.anggotaRombongan)) {
+          p.anggotaRombongan.forEach(r => tableData.push([ rowNum++, r.fullName || '-', (r.kategori === 'rekan') ? (r.businessName || '-') : '-', (r.kategori === 'rekan') ? (r.phone || '-') : '-', r.kategori ? r.kategori.toUpperCase() : 'PENDAMPING', p.checkedIn ? 'HADIR' : ' ' ]));
+        }
+      });
+
+      doc.autoTable({ startY: 23, head: [['No', 'Nama Lengkap', 'Nama Usaha', 'No WhatsApp', 'Kategori', 'TTD / Hadir']], body: tableData, theme: 'grid', styles: { fontSize: 8, cellPadding: 3 }, headStyles: { fillColor: [30, 64, 175], textColor: 255 }, columnStyles: { 5: { minCellWidth: 25 } } });
+      doc.save(`Form-Absensi-Individu-${new Date().toISOString().slice(0,10)}.pdf`);
+    }
+    
+    // EXPORT PDF REKAP TIKET (Yang Lama)
+    function exportToPdf() {
+      if (participantsData.length === 0) return;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
+      doc.setFontSize(13); doc.setFont("helvetica", "bold"); doc.text("REKAP TIKET MABIT", 14, 13);
+      const tableData = participantsData.map((p, i) => [ i + 1, p.ticketCode || '-', p.fullName || '-', p.domicile || '-', p.businessName || '-', `${p.attendanceType} (${1 + (p.anggotaRombongan?.length || 0)})`, p.totalFee, p.paymentStatus, p.checkedIn ? 'HADIR' : 'BELUM' ]);
+      doc.autoTable({ startY: 20, head: [['No', 'Tiket', 'Nama', 'Domisili', 'Bisnis', 'Paket/Org', 'Infaq', 'Status', 'Presensi']], body: tableData, styles: { fontSize: 8 } });
+      doc.save(`Rekap-Tiket-Mabit.pdf`);
+    }
+
+    function exportToCsv() {
+      const headers = ["Tiket", "Nama Utama", "Domisili", "Paket", "Rombongan Lengkap", "Total Infaq", "Status"];
+      const rows = participantsData.map(p => [ `"${p.ticketCode}"`, `"${p.fullName}"`, `"${p.domicile}"`, `"${p.attendanceType}"`, `"${(p.anggotaRombongan||[]).map(r=>r.fullName).join(', ')}"`, p.totalFee, `"${p.paymentStatus}"` ]);
+      const csv = "data:text/csv;charset=utf-8,\uFEFF" + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+      const link = document.createElement("a"); link.href = encodeURI(csv); link.download = `Rekap.csv`; link.click();
+    }
+
+    // EVENT BINDINGS EXTRA
+    document.getElementById('btnExportAbsensi').onclick = exportAbsensiPdf;
+    document.getElementById('btnExportPdf').onclick = exportToPdf;
+    document.getElementById('btnExportCsv').onclick = exportToCsv;
+    document.getElementById('btnOpenScanner').onclick = startScanner;
+    document.getElementById('btnCloseScanner').onclick = stopScanner;
+    document.getElementById('btnRefresh').onclick = loadData;
+    document.getElementById('btnCloseDetail').onclick = () => document.getElementById('detailModal').classList.add('hidden');
+    document.getElementById('btnModalCloseAction').onclick = () => document.getElementById('detailModal').classList.add('hidden');
+
+    loadData();
+  </script>
+</body>
+</html>
